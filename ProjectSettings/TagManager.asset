@@ -9,6 +9,7 @@ TagManager:
   - Blue
   - Yellow
   - Red
+  - Row
   layers:
   - Default
   - TransparentFX
@@ -21,11 +22,11 @@ TagManager:
   - Green
   - Blue
   - Yellow
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Row
+  - PostProcess
+  - Spikes
+  - PowerUp
+  - InvisiblePlayer
   - 
   - 
   - 
