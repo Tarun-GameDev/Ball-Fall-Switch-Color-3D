@@ -8,10 +8,12 @@ public class RowSpawner : MonoBehaviour
     [SerializeField] List<GameObject> allRows;
     [SerializeField] float newSpawnYPos = 5f;
     [SerializeField] int noOfRowsSpawned = 0;
+    public bool uilimited = false;
 
     private void Start()
     {
-        SpawnRow();
+        if(uilimited)
+            SpawnRow();
     }
 
     public void SpawnRow()

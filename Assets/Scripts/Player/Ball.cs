@@ -23,6 +23,7 @@ public class Ball : MonoBehaviour
     [SerializeField] GameObject ballFractured;
     [SerializeField] GameObject ballModel;
     bool invisiblePowerUP = false;
+    public bool levelCompleted = false;
 
     private void Start()
     {
@@ -34,7 +35,7 @@ public class Ball : MonoBehaviour
 
     private void Update()
     {
-        if (dead)
+        if (dead || levelCompleted)
             return;
 
         //for spikes collision check
@@ -154,6 +155,11 @@ public class Ball : MonoBehaviour
         BallMatl.SetColor("_Color", new Color(1, 1, 1, .5f));
         yield return new WaitForSeconds(2f);
         //invisiblePowerUP = false;
+        DisablePowerUp();
+    }
+
+    public void DisablePowerUp()
+    {
         gameObject.layer = 3;
         BallMatl.SetColor("_Color", new Color(1, 1, 1, 1f));
     }

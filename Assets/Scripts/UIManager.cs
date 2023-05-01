@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject playingMenu;
     [SerializeField] GameObject deadMenu;
     [SerializeField] TextMeshProUGUI scoreText;
+    [SerializeField] GameObject levelCompleteMenu;
 
     public void DeadMenu()
     {
@@ -24,6 +25,17 @@ public class UIManager : MonoBehaviour
     public void ScoreText(int _score)
     {
         scoreText.text = _score.ToString("00");
+    }
+
+    public void LevelComplete()
+    {
+        levelCompleteMenu.SetActive(true);
+        playingMenu.SetActive(false);
+    }
+
+    public void NextLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
      
 }

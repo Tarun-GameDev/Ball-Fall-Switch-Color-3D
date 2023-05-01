@@ -22,7 +22,9 @@ public class ColorObstucleSpawner : MonoBehaviour
         {
             if (other.CompareTag("Player"))
             {
-                gameObject.GetComponentInParent<RowSpawner>().SpawnRow();
+                RowSpawner _spawner = gameObject.GetComponentInParent<RowSpawner>();
+                if (_spawner.uilimited)
+                    _spawner.SpawnRow();
                 GameManager.instance.AddScore();
                 triggered = true;
             }
