@@ -1089,18 +1089,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1009069349}
     m_Modifications:
-    - target: {fileID: 4419886767133158835, guid: c87e55fdef86ac74bb11a94751e63869, type: 3}
-      propertyPath: colorObstucles.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4419886767133158835, guid: c87e55fdef86ac74bb11a94751e63869, type: 3}
-      propertyPath: colorObstucles.Array.data[0]
-      value: 
-      objectReference: {fileID: 1701176385544207417, guid: 8c1a1d5ea288af9468523cfc58527f09, type: 3}
-    - target: {fileID: 4419886767133158835, guid: c87e55fdef86ac74bb11a94751e63869, type: 3}
-      propertyPath: colorObstucles.Array.data[1]
-      value: 
-      objectReference: {fileID: 6906997994338430501, guid: cf30bff0c6af89e4e86755bd5421b017, type: 3}
     - target: {fileID: 4419886767133158836, guid: c87e55fdef86ac74bb11a94751e63869, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -1754,18 +1742,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1009069349}
     m_Modifications:
-    - target: {fileID: 4419886767133158835, guid: c87e55fdef86ac74bb11a94751e63869, type: 3}
-      propertyPath: colorObstucles.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4419886767133158835, guid: c87e55fdef86ac74bb11a94751e63869, type: 3}
-      propertyPath: colorObstucles.Array.data[1]
-      value: 
-      objectReference: {fileID: 1701176385544207417, guid: 8c1a1d5ea288af9468523cfc58527f09, type: 3}
-    - target: {fileID: 4419886767133158835, guid: c87e55fdef86ac74bb11a94751e63869, type: 3}
-      propertyPath: colorObstucles.Array.data[2]
-      value: 
-      objectReference: {fileID: 589533976124067800, guid: d8e2479f8c705714683b173e8553651d, type: 3}
     - target: {fileID: 4419886767133158836, guid: c87e55fdef86ac74bb11a94751e63869, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -3073,14 +3049,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1009069349}
     m_Modifications:
-    - target: {fileID: 142055201689464363, guid: c87e55fdef86ac74bb11a94751e63869, type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4419886767133158835, guid: c87e55fdef86ac74bb11a94751e63869, type: 3}
-      propertyPath: colorObstucles.Array.size
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4419886767133158836, guid: c87e55fdef86ac74bb11a94751e63869, type: 3}
       propertyPath: m_RootOrder
       value: 0

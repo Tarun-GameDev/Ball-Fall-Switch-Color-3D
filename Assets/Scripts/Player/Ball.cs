@@ -10,14 +10,14 @@ public class Ball : MonoBehaviour
     Collider col;
 
     public string[] colorNames;
-    public int selectedColorId;
+    public int selectedColorId = 4;
     public bool colliderCheck = false;
-    public float collisionCheckRadius = 1f;
-    public LayerMask collideWithObstuclesMask;
-    [SerializeField] float enemyCheckRadius = .5f;
-    [SerializeField] LayerMask enemyMask;
     [SerializeField] Material BallMatl;
-    [SerializeField] Vector2[] mateialOffset;
+    [SerializeField] Vector2[] mateialOffset = { new Vector2(0.887f, 0.115f),
+        new Vector2(0.884f, 0.370f),
+        new Vector2(0.7f, 0.35f),
+        new Vector2(0.695f, 0.43f),
+        new Vector2(0.511f,0.490f)};
     public bool dead = false;
     [SerializeField] UIManager uiManager;
     [SerializeField] GameObject ballFractured;
@@ -37,12 +37,6 @@ public class Ball : MonoBehaviour
     {
         if (dead || levelCompleted)
             return;
-
-        //for spikes collision check
-        EnemyCollisionCheck();
-
-        if (colliderCheck)
-            CollisionCheck();
 
         //if(invisiblePowerUP)
             //disableCollision();
@@ -73,43 +67,20 @@ public class Ball : MonoBehaviour
             right = !right;
         }
 
-        /*
-        if(colliderCheck)
+        if(selectedColorId != 4)
         {
             if (collision.collider.CompareTag(colorNames[selectedColorId]))
             {
                 collision.collider.isTrigger = true;
             }
-            colliderCheck = false;
-        }*/
-    }
+            else if (collision.collider.isTrigger)
+                collision.collider.isTrigger = false;
 
-    void CollisionCheck()
-    {
-        Collider[] collider = Physics.OverlapSphere(transform.position, collisionCheckRadius, collideWithObstuclesMask);
-        foreach (Collider nearbyObject in collider)
-        {
-            Collider _colorCol = nearbyObject.GetComponent<Collider>();
-
-            if (_colorCol.CompareTag(colorNames[selectedColorId]))
-            {
-                _colorCol.isTrigger = true;
-            }
-            else if (_colorCol.isTrigger)
-                _colorCol.isTrigger = false;
         }
-    }
 
-    void EnemyCollisionCheck()
-    {
-        Collider[] collider = Physics.OverlapSphere(transform.position, enemyCheckRadius, enemyMask);
-        foreach (Collider nearbyObject in collider)
+        if (collision.collider.CompareTag("Spikes"))
         {
-
-            var obj = nearbyObject.GetComponent<Collider>();
-            if (obj != null)
-                if(obj.enabled)
-                    Dead();
+            Dead();
         }
     }
 
@@ -120,6 +91,7 @@ public class Ball : MonoBehaviour
         selectedColorId = _colorId;
         colliderCheck = true;
     }
+
     public void disalecollideCheck()
     {
         colliderCheck = false;
@@ -176,13 +148,5 @@ public class Ball : MonoBehaviour
         }
     }*/
     #endregion
-
-    private void OnDrawGizmos()
-    {
-        //Gizmos.color = Color.red;
-        //Gizmos.DrawSphere(transform.position, collisionCheckRadius);
-        Gizmos.color = Color.green;
-        Gizmos.DrawSphere(transform.position, enemyCheckRadius);
-    }
 
 }

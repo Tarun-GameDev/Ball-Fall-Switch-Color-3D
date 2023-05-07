@@ -45,11 +45,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94b2981cab1fbda41bf4b6801f1e3e4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colorObstucles:
-  - {fileID: 6906997994338430501, guid: cf30bff0c6af89e4e86755bd5421b017, type: 3}
-  - {fileID: 714290431834547394, guid: 5307e386e592824429de511ccd791cd6, type: 3}
-  - {fileID: 1701176385544207417, guid: 8c1a1d5ea288af9468523cfc58527f09, type: 3}
-  - {fileID: 589533976124067800, guid: d8e2479f8c705714683b173e8553651d, type: 3}
+  colorObstucles: {fileID: 2145292007667869218, guid: 528ac33123d26fb48821aa42b665bcc1, type: 3}
+  blockMats:
+  - {fileID: 2100000, guid: d833e28c358b5f1488af81eac6ab93a1, type: 2}
+  - {fileID: 2100000, guid: dc3c73c85fa24354e9c8a2b465f15f1c, type: 2}
+  - {fileID: 2100000, guid: 308f68eca0a802f4eab9456dd4a796fb, type: 2}
+  - {fileID: 2100000, guid: 4c671cd9801974048ae438a475a70318, type: 2}
+  tagNames:
+  - Red
+  - Green
+  - Blue
+  - Yellow
 --- !u!65 &142055201689464363
 BoxCollider:
   m_ObjectHideFlags: 0

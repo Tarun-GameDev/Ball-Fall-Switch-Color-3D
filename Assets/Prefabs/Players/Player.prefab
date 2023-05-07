@@ -135,7 +135,7 @@ MonoBehaviour:
   - Yellow
   - Red
   - Blue
-  selectedColorId: 0
+  selectedColorId: 4
   colliderCheck: 0
   collisionCheckRadius: 1
   collideWithObstuclesMask:
@@ -156,6 +156,7 @@ MonoBehaviour:
   uiManager: {fileID: 0}
   ballFractured: {fileID: 3615145878412603519, guid: a369fc4372805d143823cff522f10e79, type: 3}
   ballModel: {fileID: 7871647001902207008}
+  levelCompleted: 0
 --- !u!1001 &7060761238987042161
 PrefabInstance:
   m_ObjectHideFlags: 0
