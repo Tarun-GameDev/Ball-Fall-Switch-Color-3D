@@ -12,6 +12,7 @@ TagManager:
   - Row
   - EndFlag
   - Spikes
+  - Shield
   layers:
   - Default
   - TransparentFX
@@ -30,8 +31,8 @@ TagManager:
   - PowerUp
   - InvisiblePlayer
   - EndFlag
-  - 
-  - 
+  - FracturedObj
+  - Shield
   - 
   - 
   - 

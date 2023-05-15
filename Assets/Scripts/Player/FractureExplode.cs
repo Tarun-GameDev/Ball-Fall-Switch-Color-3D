@@ -10,7 +10,7 @@ public class FractureExplode : MonoBehaviour
     [SerializeField] float minForce;
     [SerializeField] float maxForce;
     [SerializeField] float radius;
-    float destroytime = 6f;
+    [SerializeField] float destroytime = 6f;
 
     public void Start()
     {

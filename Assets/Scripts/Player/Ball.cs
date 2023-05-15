@@ -7,7 +7,7 @@ public class Ball : MonoBehaviour
     public float speed = 10f;
     public bool right = true;
     Rigidbody rb;
-    Collider col;
+    SphereCollider col;
 
     public string[] colorNames;
     public int selectedColorId = 4;
@@ -22,13 +22,26 @@ public class Ball : MonoBehaviour
     [SerializeField] UIManager uiManager;
     [SerializeField] GameObject ballFractured;
     [SerializeField] GameObject ballModel;
-    bool invisiblePowerUP = false;
+    
     public bool levelCompleted = false;
+
+    [Header("PowerUPS")]
+    [SerializeField] float invisPowTimer = 3f;
+    bool sizeUpPowUPActive = false;
+    [SerializeField] float sizeUpPowTimer = 3f;
+    [SerializeField] GameObject fracturedBlock;
+    public Material[] fracturedBlockMat;
+    [SerializeField] float jumpPadTimer = 3f;
+    [SerializeField] float jumpPadForce = 10f;
+    [SerializeField] bool shieldActive = false;
+    [SerializeField] GameObject shieldModel;
+    [SerializeField] Animator shieldAnimator;
+    [SerializeField] ParticleSystem shieldOffPartiEff;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        col = GetComponent<Collider>();
+        col = GetComponent<SphereCollider>();
         if (BallMatl != null)
             BallMatl.mainTextureOffset = mateialOffset[selectedColorId];
     }
@@ -38,8 +51,7 @@ public class Ball : MonoBehaviour
         if (dead || levelCompleted)
             return;
 
-        //if(invisiblePowerUP)
-            //disableCollision();
+
     }
 
 
@@ -53,7 +65,11 @@ public class Ball : MonoBehaviour
             rb.AddForce(Vector3.right * speed, ForceMode.Force);
         }
         else
-            rb.AddForce(Vector3.left * speed, ForceMode.Force);   
+            rb.AddForce(Vector3.left * speed, ForceMode.Force);
+
+        var pos = transform.position;
+        pos.x = Mathf.Clamp(transform.position.x, -7f, 7f);
+        transform.position = pos;
             
     }
 
@@ -67,21 +83,49 @@ public class Ball : MonoBehaviour
             right = !right;
         }
 
+        if(sizeUpPowUPActive)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                if (collision.collider.CompareTag(colorNames[i]))
+                {
+                    CinemachineShake.instance.CameraShake(10f, .2f);
+                    var obj = Instantiate(fracturedBlock, collision.collider.transform.position, Quaternion.identity);
+                    Destroy(collision.collider.gameObject);
+                    obj.GetComponent<ChangeMat>().changeMaterial(fracturedBlockMat[i]);
+                }
+            }
+            return;
+        }
+        Collider _col = collision.collider;
+
         if(selectedColorId != 4)
         {
-            if (collision.collider.CompareTag(colorNames[selectedColorId]))
-            {
-                collision.collider.isTrigger = true;
+            if (_col.CompareTag(colorNames[selectedColorId]))
+            {                
+                _col.isTrigger = true;
+                StartCoroutine(disableTrigget(_col));
             }
-            else if (collision.collider.isTrigger)
-                collision.collider.isTrigger = false;
-
         }
 
         if (collision.collider.CompareTag("Spikes"))
         {
-            Dead();
+            if (shieldActive)
+            {
+                right = !right;
+                StartCoroutine(jumpPadUP(.5f,15f));
+                StartCoroutine(deactivateShield());
+            }
+            else
+                Dead();
         }
+    }
+    
+    IEnumerator disableTrigget(Collider _col)
+    {
+        yield return new WaitForSeconds(2f);
+        if(!dead)
+            _col.isTrigger = false;
     }
 
     public void SetColorID(int _colorId)
@@ -122,12 +166,12 @@ public class Ball : MonoBehaviour
 
     IEnumerator StartInvisiblePow()
     {
-        //invisiblePowerUP = true;
+        CinemachineShake.instance.CameraShake(10f, .2f);
         gameObject.layer = 15;
         BallMatl.SetColor("_Color", new Color(1, 1, 1, .5f));
-        yield return new WaitForSeconds(2f);
-        //invisiblePowerUP = false;
-        DisablePowerUp();
+        yield return new WaitForSeconds(invisPowTimer);
+        if(!dead)
+            DisablePowerUp();
     }
 
     public void DisablePowerUp()
@@ -135,6 +179,72 @@ public class Ball : MonoBehaviour
         gameObject.layer = 3;
         BallMatl.SetColor("_Color", new Color(1, 1, 1, 1f));
     }
+
+    public void SizeUPPowerUP()
+    {
+        StartCoroutine(SizeUPPow());
+    }
+
+    IEnumerator SizeUPPow()
+    {
+        CinemachineShake.instance.CameraShake(10f, .2f);
+        transform.localScale = transform.localScale * 2f;
+        rb.mass = 100f;
+        sizeUpPowUPActive = true;
+        yield return new WaitForSeconds(sizeUpPowTimer);
+        if (!dead)
+        {
+            transform.localScale = transform.localScale / 2f;
+            rb.mass = 1f;
+            sizeUpPowUPActive = false;
+        }
+    }
+
+    public void JumpPad()
+    {
+        StartCoroutine(jumpPadUP(jumpPadTimer,jumpPadForce));
+    }
+
+    IEnumerator jumpPadUP(float _jumpPadTimer,float _jumpForce)
+    {
+        gameObject.layer = 15;
+        BallMatl.SetColor("_Color", new Color(1, 1, 1, .5f));
+        rb.AddForce(Vector3.up * _jumpForce, ForceMode.VelocityChange);
+        CinemachineShake.instance.CameraShake(10f, .2f);
+        yield return new WaitForSeconds(_jumpPadTimer);
+        if(!dead)
+            DisablePowerUp();
+    }
+
+    public void ShieldPowerUp()
+    {
+        StartCoroutine(Shield());
+    }
+
+    IEnumerator Shield()
+    {
+        CinemachineShake.instance.CameraShake(10f, .2f);
+        shieldActive = true;
+        shieldModel.SetActive(true);
+        col.radius = 0.75f;
+        shieldAnimator.SetTrigger("ShieldActivate");
+        yield return new WaitForSeconds(15f);
+        if(shieldActive && !dead)
+            StartCoroutine(deactivateShield());
+    }
+
+    IEnumerator deactivateShield()
+    {
+        CinemachineShake.instance.CameraShake(10f, .2f);
+        shieldModel.SetActive(false);
+        col.radius = 0.5f;
+        yield return new WaitForSeconds(.1f);
+        shieldActive = false;
+        if (shieldOffPartiEff != null)
+            shieldOffPartiEff.Play();
+    }
+
+    
 
     /*
     void disableCollision()

@@ -110,3 +110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89e9cee58651c284fb4b041f59a5ea7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  invisiblePowUp: 1
+  sizeUpPowerUp: 0
+  shieldpowerUp: 0
+  particleEffect: {fileID: 5270634629425759360, guid: dd5cb71fc6d89294abb4764763e1a543, type: 3}
