@@ -144,6 +144,8 @@ public class Ball : MonoBehaviour
             BallMatl.mainTextureOffset = mateialOffset[_colorId];
         selectedColorId = _colorId;
         colliderCheck = true;
+        if (audioManager != null)
+            audioManager.Play("ButtonClick");
     }
 
     public void disalecollideCheck()

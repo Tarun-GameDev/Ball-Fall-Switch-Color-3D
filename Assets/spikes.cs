@@ -6,6 +6,7 @@ public class spikes : MonoBehaviour
 {
 
     [SerializeField] Collider col;
+    [SerializeField] AudioSource spikesAudio;
 
     private void Start()
     {
@@ -15,6 +16,8 @@ public class spikes : MonoBehaviour
     public void ActiveCollider()
     {
         col.enabled = true;
+        if (spikesAudio != null)
+            spikesAudio.Play();
     }
 
     public void DeactiveCollider()

@@ -36,8 +36,12 @@ public class TimerToFinish : MonoBehaviour
 
     void LevelFailed()
     {
-        GameManager.instance.ball.Dead();
-        if(levelFailedUI != null)
-            levelFailedUI.SetActive(true);
+        if (!GameManager.instance.ball.dead)
+        {
+            GameManager.instance.ball.Dead();
+            if (levelFailedUI != null)
+                levelFailedUI.SetActive(true);
+        }
+
     }
 }
