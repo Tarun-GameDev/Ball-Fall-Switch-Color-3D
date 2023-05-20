@@ -44,6 +44,9 @@ public class PowerUp : MonoBehaviour
 
     void Deactivate()
     {
+        AudioManager _audio = AudioManager.instance;
+        if (_audio != null)
+            _audio.Play("PowerUp");
         if (particleEffect != null)
             Instantiate(particleEffect, transform.position, Quaternion.identity);
         Destroy(gameObject);

@@ -5,6 +5,7 @@ using UnityEngine;
 public class LevelComplete : MonoBehaviour
 {
     [SerializeField] ParticleSystem CompletedPartEff;
+    [SerializeField] AudioSource levelCompletedAudio;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -15,6 +16,8 @@ public class LevelComplete : MonoBehaviour
             GameManager.instance.ball.DisablePowerUp();
             if (CompletedPartEff != null)
                 CompletedPartEff.Play();
+            if (levelCompletedAudio != null)
+                levelCompletedAudio.Play();
         }
     }
 }

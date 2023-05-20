@@ -13,6 +13,8 @@ public class Bomb : MonoBehaviour
     [SerializeField] Material[] fracturedBlockMat;
     [SerializeField] GameObject ExplosionEffect;
     [SerializeField] ParticleSystem sparksParticleEffect;
+    [SerializeField] AudioSource bombTimerAudio;
+    [SerializeField] AudioSource fireCracks;
 
     Ball ball;
 
@@ -35,6 +37,10 @@ public class Bomb : MonoBehaviour
     IEnumerator timerStart()
     {
         sparksParticleEffect.Play();
+        if (bombTimerAudio != null)
+            bombTimerAudio.Play();
+        if (fireCracks != null)
+            fireCracks.Play();
         bombActivated = true;
         yield return new WaitForSeconds(2f);
         if(!exploded)

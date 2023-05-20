@@ -5,6 +5,7 @@ using UnityEngine;
 public class JumpPad : MonoBehaviour
 {
     [SerializeField]Animator animator;
+    [SerializeField] AudioSource jumpAudio;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -18,6 +19,8 @@ public class JumpPad : MonoBehaviour
     {
         animator.SetTrigger("push");
         GameManager.instance.ball.JumpPad();
+        if (jumpAudio != null)
+            jumpAudio.Play();
     }
 
 }

@@ -37,11 +37,13 @@ public class Ball : MonoBehaviour
     [SerializeField] GameObject shieldModel;
     [SerializeField] Animator shieldAnimator;
     [SerializeField] ParticleSystem shieldOffPartiEff;
+    AudioManager audioManager;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         col = GetComponent<SphereCollider>();
+        audioManager = AudioManager.instance;
         if (BallMatl != null)
             BallMatl.mainTextureOffset = mateialOffset[selectedColorId];
     }
@@ -54,7 +56,6 @@ public class Ball : MonoBehaviour
 
     }
 
-
     void FixedUpdate()
     {
         if (dead)
@@ -62,13 +63,16 @@ public class Ball : MonoBehaviour
 
         if (right)
         {
-            rb.AddForce(Vector3.right * speed, ForceMode.Force);
+            rb.AddForce(Vector3.right * speed * Time.fixedDeltaTime, ForceMode.VelocityChange);            
         }
         else
-            rb.AddForce(Vector3.left * speed, ForceMode.Force);
+        {            
+            rb.AddForce(Vector3.left * speed * Time.fixedDeltaTime, ForceMode.VelocityChange);
+        }
+
 
         var pos = transform.position;
-        pos.x = Mathf.Clamp(transform.position.x, -7f, 7f);
+        pos.x = Mathf.Clamp(transform.position.x, -7.1f, 7.1f);
         transform.position = pos;
             
     }
@@ -98,13 +102,15 @@ public class Ball : MonoBehaviour
             return;
         }
         Collider _col = collision.collider;
+        GameObject _colObj = collision.gameObject;
 
         if(selectedColorId != 4)
         {
             if (_col.CompareTag(colorNames[selectedColorId]))
-            {                
-                _col.isTrigger = true;
-                StartCoroutine(disableTrigget(_col));
+            {
+                //_col.isTrigger = true;
+                _colObj.GetComponent<BoxCollider>().enabled = false;
+                StartCoroutine(disableTrigget(_col,_colObj));
             }
         }
 
@@ -121,11 +127,15 @@ public class Ball : MonoBehaviour
         }
     }
     
-    IEnumerator disableTrigget(Collider _col)
+    IEnumerator disableTrigget(Collider _col,GameObject _colObj)
     {
         yield return new WaitForSeconds(2f);
         if(!dead)
-            _col.isTrigger = false;
+        {
+            _colObj.GetComponent<BoxCollider>().enabled = true;
+            //_col.isTrigger = false;
+        }
+          
     }
 
     public void SetColorID(int _colorId)
@@ -155,6 +165,8 @@ public class Ball : MonoBehaviour
             Instantiate(ballFractured, transform.position, Quaternion.identity);
         if (uiManager != null)
             uiManager.DeadMenu();
+        if (audioManager != null)
+            audioManager.Play("BallBreak");
     }
 
 
@@ -189,13 +201,13 @@ public class Ball : MonoBehaviour
     {
         CinemachineShake.instance.CameraShake(10f, .2f);
         transform.localScale = transform.localScale * 2f;
-        rb.mass = 100f;
+        rb.mass = rb.mass * 2f;
         sizeUpPowUPActive = true;
         yield return new WaitForSeconds(sizeUpPowTimer);
         if (!dead)
         {
             transform.localScale = transform.localScale / 2f;
-            rb.mass = 1f;
+            rb.mass = rb.mass/2f;
             sizeUpPowUPActive = false;
         }
     }
@@ -242,6 +254,8 @@ public class Ball : MonoBehaviour
         shieldActive = false;
         if (shieldOffPartiEff != null)
             shieldOffPartiEff.Play();
+        if (audioManager != null)
+            audioManager.Play("PowerUp");
     }
 
     
