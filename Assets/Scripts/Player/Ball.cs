@@ -39,6 +39,9 @@ public class Ball : MonoBehaviour
     [SerializeField] ParticleSystem shieldOffPartiEff;
     AudioManager audioManager;
 
+    [SerializeField] AudioSource ballRollAudio;
+    [SerializeField] bool grounded = false;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -58,12 +61,14 @@ public class Ball : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (dead)
+        if (dead || levelCompleted)
             return;
+
+
 
         if (right)
         {
-            rb.AddForce(Vector3.right * speed * Time.fixedDeltaTime, ForceMode.VelocityChange);            
+            rb.AddForce(Vector3.right * speed * Time.fixedDeltaTime, ForceMode.VelocityChange);
         }
         else
         {            
@@ -79,12 +84,14 @@ public class Ball : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (dead)
+        if (dead || levelCompleted)
             return;
 
         if (collision.collider.CompareTag("Border"))
         {
             right = !right;
+            if (ballRollAudio != null)
+                ballRollAudio.Play();
         }
 
         if(sizeUpPowUPActive)
@@ -119,7 +126,9 @@ public class Ball : MonoBehaviour
             if (shieldActive)
             {
                 right = !right;
-                StartCoroutine(jumpPadUP(.5f,15f));
+                if (ballRollAudio != null)
+                    ballRollAudio.Play();
+                StartCoroutine(jumpPadUP(.5f,40f));
                 StartCoroutine(deactivateShield());
             }
             else
@@ -169,6 +178,13 @@ public class Ball : MonoBehaviour
             uiManager.DeadMenu();
         if (audioManager != null)
             audioManager.Play("BallBreak");
+    }
+
+    public void LevelCompleted()
+    {
+        levelCompleted = true;
+        if (ballRollAudio != null)
+            ballRollAudio.Stop();
     }
 
 

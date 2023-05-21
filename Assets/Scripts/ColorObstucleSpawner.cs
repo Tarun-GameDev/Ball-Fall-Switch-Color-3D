@@ -10,6 +10,9 @@ public class ColorObstucleSpawner : MonoBehaviour
 
     int spawnPos = -6;
     bool triggered = false;
+    RowSpawner _spawner;
+
+
     void Start()
     {
         for (int i = 0; i < 5; i++)
@@ -20,6 +23,17 @@ public class ColorObstucleSpawner : MonoBehaviour
             _block.tag = tagNames[randomBlock];
             _block.layer = LayerMask.NameToLayer(tagNames[randomBlock]);
         }
+
+        _spawner = gameObject.GetComponentInParent<RowSpawner>();
+        if (_spawner != null)
+        {
+            if (_spawner.uilimited)
+                triggered = false;
+            else
+                triggered = true;
+        }
+        else
+            triggered = true;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -27,10 +41,8 @@ public class ColorObstucleSpawner : MonoBehaviour
         if(!triggered)
         {
             if (other.CompareTag("Player"))
-            {
-                RowSpawner _spawner = gameObject.GetComponentInParent<RowSpawner>();
-                if (_spawner.uilimited)
-                    _spawner.SpawnRow();
+            {              
+                _spawner.SpawnRow();
                 GameManager.instance.AddScore();
                 triggered = true;
             }

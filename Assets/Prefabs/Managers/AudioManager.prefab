@@ -59,3 +59,10 @@ MonoBehaviour:
     loop: 0
     SpatialBlend: 0
     source: {fileID: 0}
+  - name: ButtonClick
+    clip: {fileID: 8300000, guid: 92d2b1b7b67ca4c43aa5d6161c66e7e3, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    SpatialBlend: 0
+    source: {fileID: 0}

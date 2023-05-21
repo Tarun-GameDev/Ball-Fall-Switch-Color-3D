@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelComplete : MonoBehaviour
 {
@@ -11,13 +12,17 @@ public class LevelComplete : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            GameManager.instance.uiManager.LevelComplete();
-            GameManager.instance.ball.levelCompleted = true;
-            GameManager.instance.ball.DisablePowerUp();
+            GameManager _gameManager = GameManager.instance;
+
+            _gameManager.uiManager.LevelComplete();
+            _gameManager.ball.LevelCompleted();
+            _gameManager.ball.DisablePowerUp();
             if (CompletedPartEff != null)
                 CompletedPartEff.Play();
             if (levelCompletedAudio != null)
                 levelCompletedAudio.Play();
+
+            PlayerPrefs.SetInt("LevelUnlocked", SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
 }

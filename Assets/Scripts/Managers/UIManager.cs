@@ -10,6 +10,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject deadMenu;
     [SerializeField] TextMeshProUGUI scoreText;
     [SerializeField] GameObject levelCompleteMenu;
+    [SerializeField] TextMeshProUGUI levelNoText;
+
+    private void Start()
+    {
+        levelNoText.text = "Level " + SceneManager.GetActiveScene().buildIndex.ToString();
+    }
 
     public void DeadMenu()
     {

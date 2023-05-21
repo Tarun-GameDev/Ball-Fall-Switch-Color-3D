@@ -7,18 +7,31 @@ public class TimerToFinish : MonoBehaviour
 {
     
     [SerializeField] TextMeshProUGUI timerText;
+    [SerializeField] Animator timerTextAnimator;
     [SerializeField] GameObject levelFailedUI;
     [SerializeField] int min;
     [SerializeField] int sec;
     [SerializeField] float startTime;
     public bool levelCompleted = false;
     [SerializeField] bool levelFailed = false;
+    [SerializeField] AudioSource CountDownAudio;
+    bool countdown = false;
     
    
     void Update()
     {
         if (startTime <= 0f || levelCompleted || levelFailed)
             return;
+
+        if(startTime <= 5f && !countdown)
+        {
+            if(CountDownAudio!= null)
+                CountDownAudio.Play();
+            timerText.color = Color.red;
+            if (timerTextAnimator != null)
+                timerTextAnimator.SetTrigger("CountDown");
+            countdown = true;
+        }
 
         startTime -= Time.deltaTime;
         sec = (int)(startTime % 60);
@@ -30,6 +43,8 @@ public class TimerToFinish : MonoBehaviour
         {
             levelFailed = true;
             LevelFailed();
+            if (CountDownAudio != null)
+                CountDownAudio.Stop();
         }
             
     }
