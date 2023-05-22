@@ -39,7 +39,6 @@ public class Ball : MonoBehaviour
     [SerializeField] ParticleSystem shieldOffPartiEff;
     AudioManager audioManager;
 
-    [SerializeField] AudioSource ballRollAudio;
     [SerializeField] bool grounded = false;
 
     private void Start()
@@ -90,8 +89,6 @@ public class Ball : MonoBehaviour
         if (collision.collider.CompareTag("Border"))
         {
             right = !right;
-            if (ballRollAudio != null)
-                ballRollAudio.Play();
         }
 
         if(sizeUpPowUPActive)
@@ -115,7 +112,6 @@ public class Ball : MonoBehaviour
         {
             if (_col.CompareTag(colorNames[selectedColorId]))
             {
-                //_col.isTrigger = true;
                 _colObj.GetComponent<BoxCollider>().enabled = false;
                 StartCoroutine(disableTrigget(_col,_colObj));
             }
@@ -126,8 +122,6 @@ public class Ball : MonoBehaviour
             if (shieldActive)
             {
                 right = !right;
-                if (ballRollAudio != null)
-                    ballRollAudio.Play();
                 StartCoroutine(jumpPadUP(.5f,40f));
                 StartCoroutine(deactivateShield());
             }
@@ -135,14 +129,32 @@ public class Ball : MonoBehaviour
                 Dead();
         }
     }
-    
+
+    private void OnCollisionStay(Collision collision)
+    {
+        if (dead || levelCompleted)
+            return;
+
+
+        Collider _col = collision.collider;
+        GameObject _colObj = collision.gameObject;
+
+        if (selectedColorId != 4)
+        {
+            if (_col.CompareTag(colorNames[selectedColorId]))
+            {
+                _colObj.GetComponent<BoxCollider>().enabled = false;
+                StartCoroutine(disableTrigget(_col, _colObj));
+            }
+        }
+    }
+
     IEnumerator disableTrigget(Collider _col,GameObject _colObj)
     {
         yield return new WaitForSeconds(2f);
         if(!dead)
         {
             _colObj.GetComponent<BoxCollider>().enabled = true;
-            //_col.isTrigger = false;
         }
           
     }
@@ -183,8 +195,6 @@ public class Ball : MonoBehaviour
     public void LevelCompleted()
     {
         levelCompleted = true;
-        if (ballRollAudio != null)
-            ballRollAudio.Stop();
     }
 
 

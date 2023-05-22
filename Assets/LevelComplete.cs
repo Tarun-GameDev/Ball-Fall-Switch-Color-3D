@@ -14,6 +14,8 @@ public class LevelComplete : MonoBehaviour
         {
             GameManager _gameManager = GameManager.instance;
 
+            PlayerPrefs.SetInt("LevelUnlocked", SceneManager.GetActiveScene().buildIndex + 1);
+
             _gameManager.uiManager.LevelComplete();
             _gameManager.ball.LevelCompleted();
             _gameManager.ball.DisablePowerUp();
@@ -21,8 +23,6 @@ public class LevelComplete : MonoBehaviour
                 CompletedPartEff.Play();
             if (levelCompletedAudio != null)
                 levelCompletedAudio.Play();
-
-            PlayerPrefs.SetInt("LevelUnlocked", SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
 }
